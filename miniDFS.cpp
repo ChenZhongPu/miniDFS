@@ -126,7 +126,7 @@ bool processCmd(const string& cmd)
         type = MsgType::read;
         if (x.size() != 4)
         {
-            cerr << "Usage: read file_id offset count [output_file_path]" << endl;
+            cerr << "Usage: read file_id offset count" << endl;
             return false;
         }
 
@@ -499,6 +499,25 @@ int main(int argc, char* argv[])
 
 
         server_fileRangesMap.clear();
+
+        if (type == MsgType::put)
+        {
+            if (ispropercmd)
+            {
+                cout << "Upload suceesful ! File id = " << fileID - 1 << endl;
+            }
+            else
+            {
+                cout << "Failed to upload file" << endl;
+            }
+
+            if (ifs.is_open())
+            {
+                ifs.close();
+            }
+        }
+
+
         processed = false;
     }
 
