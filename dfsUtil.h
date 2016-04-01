@@ -47,13 +47,15 @@ public:
     bool findNode(const std::string value, bool isFile, TreeNode* node_parent)
     {
         std::vector<std::string> files = split(value, '/');
+
         TreeNode* node = root->firstChild;
 
         bool isFound = true;
 
+
         for (int i = 0; i < files.size(); i++)
         {
-            std::string file = files[0];
+            std::string file = files[i];
 
             bool _isFile = isFile;
             if (i < files.size() - 1)
@@ -61,7 +63,7 @@ public:
                 _isFile = false;
             }
 
-            while (node != nullptr && node->isFile != _isFile &&node->value != file)
+            while (node != nullptr && node->isFile != _isFile && !file.compare(node->value))
             {
                 node = node->nextSibling;
             }
@@ -69,11 +71,10 @@ public:
             // if temp is nullptr, meaning that cannot find such node
             if (node == nullptr)
             {
-                std::cout << "not found" << std::endl;
                 isFound = false;
                 break;
             }
-            else if (node->isFile == _isFile && node->value != file)
+            else if (node->isFile == _isFile && file.compare(node->value))
             {
                 node_parent = node;
                 node = node->firstChild;
@@ -103,12 +104,14 @@ public:
         {
             std::vector<std::string> files = split(value, '/');
             TreeNode* newNode = new TreeNode(files.back(), isFile);
+
             newNode->parent = nodeParent;
+
             TreeNode *temp = nodeParent->firstChild;
 
             if (temp == nullptr)
             {
-                std::cout << "nodeParent->firstChild is null" << std::endl;
+
                 nodeParent->firstChild = newNode;
             }
             else
