@@ -28,8 +28,11 @@ struct fileRange
     }
 };
 
-struct TreeNode
+
+class TreeNode
 {
+public:
+
     std::string value;
     bool isFile;
     TreeNode* parent;
@@ -42,9 +45,9 @@ struct TreeNode
 class FileTree
 {
 public:
-    TreeNode *root;
+    TreeNode *root = nullptr;
 
-    bool findNode(const std::string value, bool isFile, TreeNode* node_parent)
+    bool findNode(const std::string value, bool isFile, TreeNode*& node_parent)
     {
         std::vector<std::string> files = split(value, '/');
 
@@ -55,6 +58,8 @@ public:
 
         for (int i = 0; i < files.size(); i++)
         {
+            bool isBreakFromWhile = false;
+
             std::string file = files[i];
 
             bool _isFile = isFile;
@@ -63,29 +68,27 @@ public:
                 _isFile = false;
             }
 
-            while (node != nullptr && node->isFile != _isFile && !file.compare(node->value))
+            while (node != nullptr)
             {
+                if (node->isFile == _isFile && file.compare(node->value) == 0)
+                {
+                    node_parent = node;
+                    node = node->firstChild;
+                    isBreakFromWhile = true;
+                    break;
+                }
                 node = node->nextSibling;
             }
+            if (!isBreakFromWhile)
+            {
+                if (node == nullptr)
+                {
+                    isFound = false;
+                    break;
+                }
+            }
 
-            // if temp is nullptr, meaning that cannot find such node
-            if (node == nullptr)
-            {
-                isFound = false;
-                break;
-            }
-            else if (node->isFile == _isFile && file.compare(node->value))
-            {
-                node_parent = node;
-                node = node->firstChild;
-            }
-            else
-            {
-                isFound = false;
-                break;
-            }
         }
-        delete node;
         return isFound;
     }
 
@@ -98,7 +101,10 @@ public:
     void insertNode(const std::string value, bool isFile)
     {
         TreeNode *nodeParent = root;
+
+        //bool isFound = findNode(value, isFile, nodeParent);
         bool isFound = findNode(value, isFile, nodeParent);
+
 
         if (!isFound)
         {
@@ -111,16 +117,19 @@ public:
 
             if (temp == nullptr)
             {
-
                 nodeParent->firstChild = newNode;
             }
+
             else
             {
                 while (temp->nextSibling != nullptr)
                 {
                     temp = temp->nextSibling;
                 }
+
                 temp->nextSibling = newNode;
+
+
             }
         }
     }
