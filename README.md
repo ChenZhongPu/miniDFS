@@ -58,7 +58,7 @@ MiniDFS > quit
 - 简单的目录结构
 
 ### 数据校验
-Mac OSX仅支持`md5`命令，Linux支持`md5`、`md5sum`等。
+Mac OSX仅支持`md5`命令，Linux中同样功能的命令是`md5sum`（可选参数不同）。
 
 **副本数据的一致性：**
 假设datanode0和datanode1均有a.txt的第一个block信息：
