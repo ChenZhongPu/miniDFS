@@ -57,6 +57,12 @@ MiniDFS > quit
 - 文件读取（下载）
 - 简单的目录结构
 
+### 存储目录
+当前，在当前可执行文件目录，生成的`dfsfiles`文件夹作为DFS文件目录。其中`datanode0/1/2/3`是
+每个dataserver的存储目录；namenode是nameserver的存储目录。
+
+文件被拆分后的命令方法和HDFS类似，比如`a.txt-part0`。
+
 ### 数据校验
 Mac OSX仅支持`md5`命令，Linux中同样功能的命令是`md5sum`（可选参数不同）。
 
